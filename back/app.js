@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const path = require('path');
 
+const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/auth');
-const sauceRoutes = require('./routes/sauce');
 
 const app = express();
-dotenv.config();
+require('dotenv').config();
 
 const MY_PORT = process.env.PORT;
 
@@ -27,11 +27,21 @@ app.use((req, res, next) => {
 
 
 
+// remplace body parser
 app.use(express.json());
-app.use('/images', express.static(path.join(__dirname, 'images')))
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
-app.use('/api/sauces/', sauceRoutes);
 
 module.exports = app;
-//   mdp mongo DB
+
+
+
+
+
+
+
+
+module.exports = app;

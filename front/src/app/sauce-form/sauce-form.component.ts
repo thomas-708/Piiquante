@@ -99,7 +99,7 @@ export class SauceFormComponent implements OnInit {
     newSauce.userId = this.auth.getUserId();
    
     if (this.mode === 'new') {
-          
+      console.log('-------------------------------------------------------------test');
       
       this.sauces.createSauce(newSauce, this.sauceForm.get('image')!.value).pipe(
         tap(({ message }) => {
