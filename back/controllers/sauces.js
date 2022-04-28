@@ -1,7 +1,7 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
 
-// --------- CRÉER/ENREGISTRER UNE SAUCE ----------
+
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce)
     delete sauceObject._id;
@@ -14,7 +14,7 @@ exports.createSauce = (req, res, next) => {
       .catch(error => res.status(400).json({ message: 'erreur L14 !' }));
 };
 
-// --------- MODIFIER UNE SAUCE ----------
+
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
         {
@@ -26,17 +26,17 @@ exports.modifySauce = (req, res, next) => {
       .catch(error => res.status(400).json({ error }));
 };
 
-// --------- SUPPRIMER UNE SAUCE ----------
+
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id, userId: req.auth.userId}).then
         (sauce => {
-            // ---------- empecher n'importe quel utilisateur de supprimer une sauce ---------
+           
             if (!sauce) {
                 res.status(404).json({
                   error: new Error('No such Sauce!')
                 });
             }
-            // ----------FIN empecher n'importe quel utilisateur de supprimer une sauce --------- 
+            
             const filename = sauce.imageUrl.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 Sauce.deleteOne({ _id: req.params.id })
@@ -47,21 +47,21 @@ exports.deleteSauce = (req, res, next) => {
         .catch(error => res.status(500).json({ error })); 
 };
 
-// --------- RÉCUPÉRER UNE SAUCE ----------
+
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
       .then(sauce => res.status(200).json(sauce))
       .catch(error => res.status(404).json({ error }));
 };
 
-// --------- RÉCUPÉRER L'ENSEMBLE DES SAUCES ----------
+
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 };
 
-// --------- AVIS DONNER AUX SAUCES -------
+
 exports.likeSauce = (req, res, next) => {
     const like = req.body.like;
     const idSauce = req.params.id;
